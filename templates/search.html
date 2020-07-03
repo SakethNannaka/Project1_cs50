@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Search</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<!-- <link rel="stylesheet" type="text/css" href="{{url_for('static', filename = 'css/css.css')}}"> -->
+<style>
+        h1 {
+            text-align: center;
+            color: whitesmoke;
+        }
+        body {
+			/* background-image: url(https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/093c0edb-9c5a-4e78-9071-2413f99b777c/d23zpz1-eb239eb2-0286-4a27-ba45-b8bbdaab9873.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzA5M2MwZWRiLTljNWEtNGU3OC05MDcxLTI0MTNmOTliNzc3Y1wvZDIzenB6MS1lYjIzOWViMi0wMjg2LTRhMjctYmE0NS1iOGJiZGFhYjk4NzMuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.oX3uhOQLNe0gQE-6EZa5qyGH4id5dHTUGhH7zTTAcdo); */
+        }
+		b{
+            color: green;
+        }
+        th{
+            /* color: rebeccapurple; */
+            text-align: center;
+			/* font-size: x-large; */
+        }
+        td{
+            /* color:black; */
+        }
+        table{
+            text-align: center;
+        }
+        .button {
+		    border:red;
+		    color: rebeccapurple;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+            align-self: center;
+		    font-size: 16px;
+            position: relative;
+            width: 30%;
+            top:45%;
+            left:45%;
+		  }
+
+.form-group {
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 30px;
+	margin-bottom: 20px;
+	width: 50%;
+	color: orange;
+	font-weight: bold;
+}
+.form-control {
+	background-color: lightblue;
+}
+input {
+	text-align: center;
+}
+
+h2 {
+	margin: 25px;
+	text-align:center;
+	color: orange;
+}
+p {
+	text-align: center;
+	color: orange;
+	font-size: 18px;
+}
+table {
+    /* border: 2px solid black; */
+    border-collapse: collapse;
+    text-align: center;
+    width: 50%;
+}
+
+td {
+    border: 1px solid wheat;
+    text-align: center;
+	color: black;
+}
+
+th {
+	color: white;
+	background-color: rgb(48, 45, 45);
+}
+.header {
+		  overflow: hidden;
+		  background-color:black;
+		  padding: 10px 10px;
+		}
+
+		.header a {
+		  float: left;
+		  /* background-color: rgb(100, 93, 93); */
+		  color:grey;
+		  text-align: center;
+		  padding: 15px;
+          padding-top: 4%;
+		  text-decoration: none;
+		  font-size: 16px; 
+		  line-height: 20px;
+		  border-radius: 2px;
+		}
+
+		.header a.logo {
+		  font-size: 25px;
+		  font-weight: bold;
+		}
+
+		.header a:hover {
+		  background-color: #ddd;
+		  color: black;
+		}
+
+		.header a.active {
+		  background-color: dodgerblue;
+		  color: white;
+		}
+
+		.header-right {
+		  float: right;
+          padding-left: 2%;
+		}
+		h5{
+			color: floralwhite;
+		}
+</style>
+</head>
+<body>
+    <div class="header">
+		<div class="header-left">
+			<h5>{{username}}</h5>
+		   </div>
+		<div class="header-right">
+		  
+			<button onclick="window.location.href='/logout'">Logout</button>
+		  <!-- <button type="button" class="btn btn-primary"><a href="/logout">Logout</a></button> -->
+        </div>
+        <h1>Welcome !!</h1>
+        
+    </div>
+	<br>
+	<br>
+
+    <form action="/search" method="POST">
+        <div class="row">
+            <div class="col-lg-4">
+		    <div class="form-group">
+		    	<h6><b>Please select Search by</b></h6>
+		    	<select id="Keyword" name="Choose Field" class="form-control">
+                    <option value="isbn">Isbn</option>
+                    <option value="title">Title</option>
+                    <option value="year">Year</option>
+                    <option value="author">Author</option>
+                </select>    <br>
+
+            </div>
+            </div>
+
+            <div class="col-lg-4">
+		    <div class="form-group">
+		    	<label><b>Search books</b></label>
+		    	<input name = "Search Bar" type="text" class="form-control" placeholder="please enter here" required>
+            </div>
+            </div>
+
+            <div class="col-lg-1">
+				
+		    <div class="button">
+				<button formaction = "/search" type="submit" class="btn btn-primary">Search</button>
+				
+            </div>
+            </div>
+            <br>
+        </div>
+    </form>	
+    
+	<br><br><br>
+
+	<div class="container">
+		{% if length > 0 %}
+		 
+		<div class="table-responsive">
+			<table class="table table-hover"> 
+				<thead>
+					<tr>
+					   <th>Isbn</th>
+						<th>Title</th>
+						<th>Year</th>
+						<th>Author</th>
+					</tr>
+				</thead>
+			<tbody>
+				
+				
+					{%for data in list%}
+					<tr>
+						<td><a href="{{'/book/%s'%data.isbn}}">{{data.isbn}}</a></td>
+						<td>{{data.title}}</td>
+						<td>{{data.year}}</td>
+						<td>{{data.author}}</td>
+					</tr>
+					{%endfor%}
+					
+				</tbody>
+			</table>
+		</div>
+
+        {% elif length == -1 %}
+        <div class="alert alert-success">
+            <strong>Start Searching</strong>
+          </div>
+		
+		{% else %}
+		<div class="alert alert-danger">
+			<strong>No records Found</strong>
+		  </div>
+		  
+		{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<style>
+
+
+body {
+    /* background-image: url(https://3.bp.blogspot.com/-QvYoJsLgtgM/Uh25s07MTmI/AAAAAAAAAPY/yIx7AJBg6n8/w1200-h630-p-k-no-nu/zendesk-hacked.jpg); */
+    background-color:rgb(96, 255, 117);
+    font-family: Arial, Helvetica, sans-serif;
+    background-repeat:no-repeat;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    /* padding-left: 20%; */
+    }
+
+ .fixed-header, .fixed-footer{
+			width: 100%;
+			position: fixed;        
+			background: #333;
+			padding: 5px 5;
+			color: #fff;
+		    }
+.flip-card {
+    position: relative;
+  background-color: transparent;
+  width: 500px;
+  height: 500px;
+  perspective: 1000px;
+  /* padding-left: 10%; */
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    top:40%;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+    background-color:rgb(96, 250, 155);
+  color: white;
+}
+
+.flip-card-back {
+    background-color:#cc8fff;  
+  color: black;
+  transform: rotateY(180deg);
+  padding: 4%;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+
+.button {
+  background-color: rgb(63, 141, 230); /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+}
+
+.form-control{
+    width: 15%;
+    text-align: center;
+}
+.item1 {
+  grid-row: 1 / 4;
+}
+.item2 {
+  grid-row: 1 / 4;
+}
+p{
+    color :honeydew
+}
+.card{
+    color:indianred
+}
+
+</style>
+</head>
+<body>
+
+    <div class="fixed-header">
+        <p align="center"><b>Book/Review Page</b></p>
+        <div class="row">
+
+            <div class="col-lg-6">
+                    
+                <p align="left">{{ username }}</p>
+            </div>
+            <div class="col-lg-6">
+                <a href="/logout" class="btn btn-info" role="button" style="float:right">Logout</a>        
+                </div>
+            </div>
+        </div>
+
+    <div class="container">
+    <div class="grid-container">
+        <div class="item1">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <br>
+                        <br>
+                        <h1><b>{{obj.title}}</b></h1>  
+                    </div>
+                    <div class="flip-card-back">
+                        <h3>Title  :{{obj.title}}</h3>
+                        <h3>Year   :{{obj.year}}</h3>
+                        <h3>Author :{{obj.author}}</h3>
+                        <h3>Isbn   : {{obj.isbn}}<h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item2">
+        <div class="flip-card">
+        <div class="flip-card-inner">
+            <div class="flip-card-front">
+                <br>
+                <br>
+
+        <h1>Review</h1>
+        {{message}}
+            </div>
+            
+            <div class="flip-card-back">
+              
+                <br>
+
+                {% if not Review %}
+                <br>  <br>      
+                <form action="/review" method='post' align = "left" >
+                    <label for="Rating">Rating</label>
+                        <select id="Rating" name="Rating" class="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    <br>
+                    <input type="hidden" id="ISBN" name="ISBN" value={{obj.isbn}}>
+                    <br>
+                </br>
+                    <label>Comment Here</label>
+                    <input type="text" name="Review" placeholder="Submit your Feedback Here"></input>
+                    <br>
+                    <br>
+
+                    <input type="submit" name="review" class="button"></input>
+                </form>
+                <br>
+                <br>
+
+                        
+                {% else %}
+                            <ul>
+                                <li>Rating : {{Rating}}</li>
+                                <li>Review : {{Review}}</li>
+                            </ul>
+                {% endif %}  
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+    </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+            <div class="card">
+        <h1><b>Book Reviews</b></h1>
+        {%if rev%}
+            {{rev}}
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-hover"> 
+                    <thead>
+                        <tr>
+                            <th scope="col"><b>Isbn</b></th>
+                            <th scope="col"><b>Username</b></th>
+                            <th scope="col"><b>Rating</b></th>
+                            <th scope="col"><b>Review</b></th>
+                        </tr>
+                    </thead>
+                        {%for data in reviews%}
+                        <tr>
+                            <td>{{data.username}}</td>
+                            <td>{{data.rating}}</td>
+                            <td>{{data.review}}</td>
+                        </tr>
+                        {%endfor%}
+                </table>
+            </div>
+        </div>
+        {% endif %}
+</div>
+
+</body>
+</html>

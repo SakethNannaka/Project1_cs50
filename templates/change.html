@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="{{ url_for('static', filename='Final.js') }}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='Final.css') }}">
+
+    </head>
+
+    
+    <body>
+        <div class="topnav">
+            <div class='topnav-left'>
+              <form class="form-inline" id="search-form">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" id="search_input">
+                <button class="btn btn-success"type="submit" id="search" >Search</button>
+            </form>
+            </div>
+        <p id = "username" align="center" style="color: aliceblue;">{{username}}</p>
+            
+            <div class="topnav-right">
+              <a href="/logout" class="btn btn-success">Logout</a>
+            </div>
+        </div>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+              <h6 id="search_result"></h6>
+            </div>
+            <div class="col-sm">
+              <p id="replace">One of three columns</p>
+            </div>
+            <div class="col-sm">
+              <p id="replace1">One of three columns</p>
+              
+              <p id="demo"></p>
+
+            </div>
+          </div>
+        </div>
+
+    </body>
+</html>

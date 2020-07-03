@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>registration form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<!-- <link rel='stylesheet' href='Style.css' type='text/css' /> -->
+<style>
+.fixed-header, .fixed-footer{
+			width: 100%;
+			position: fixed;        
+			background: #333;
+			padding: 10px 0;
+			color: #fff;
+		}
+		.fixed-header{
+			top: 0;
+		}
+		.fixed-footer{
+			bottom: 0;
+		}
+
+		.card-block {
+			padding: 5%;
+			position: fixed;
+			border: groove;
+			border-color: aqua;
+			top: 20%;
+			left: 20%;
+			width: 60%;
+		}
+
+		.container {
+		padding: 16px;
+		}
+
+		input[type=text], input[type=password], input[type=Email], input[type=tel], input[type=Date], input[type=Address] {
+		width: 100%;
+		padding: 8px 20px;
+		margin: 8px 0;
+		display: inline-block;
+		border: none;
+		background: #f1f1f1;
+		}
+
+		input[type=text]:focus, input[type=password], input[type=Email], input[type=tel], input[type=Date], input[type=Address]:focus {
+		background-color: #ddd;
+		outline: none;
+		}
+
+		button {
+			position: fixed;
+			left: 50%;
+        }
+        body{
+            background-color: teal;
+            background-position: 100%;
+        }
+        h4{
+            text-align: center;
+            color:firebrick;
+            position: relative;
+        }
+		form{
+			align-content :center;
+			align-self :center;
+			align-items :center;
+		}
+
+</style>
+<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			document.querySelector('#form').onsubmit = function() {
+				var email    = document.getElementById('username');
+				var password = document.getElementById('password');
+				var validEmail = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/;
+				var validPassword = /(?=.\d)(?=.[a-z])(?=.*[A-Z]).{6,}/;
+				var lowerCaseLetters = /[a-z]/g;
+				var upperCaseLetters = /[A-Z]/g;
+				var numbers = /[0-9]/g;
+
+				if (!validEmail.test(email.value)) {
+					alert('Please provide a valid email address');
+					email.focus;
+					return false;
+				   }
+
+				if (!password.value.match(lowerCaseLetters)) {
+					alert('Your password should have minimum one lowercase letter');
+					return false;
+				} 
+				else if (!password.value.match(upperCaseLetters)) {
+					alert('Your password should have minimum one Uppercase letter');
+					return false;
+				} 
+				
+				else if (!password.value.match(numbers)) {
+					alert('Your password should have minimum one number');
+					return false;
+				} 
+				else if (!password.value.length >= 6) {
+					alert('Your password should have minimum 6 letters');
+					return false;
+				}
+						};
+					});
+	</script>
+</head>
+<body>
+
+     <div class="fixed-header">
+     <div class="container">
+        <h1 align="center"><b>Registration Form</b></h1>
+
+    </div>
+     </div>
+<br></br>
+        <div class="container">
+
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-12">
+						<form id="form" action="{{url_for('register')}}" method="post" align="center" >
+							<label>Username:
+							<input id="username" name="username" autocomplete="off"  placeholder="username" type="text" >
+							</label>
+							<br>
+							<label>Password:
+							<input id="password" type="password" name="password"  placeholder="Enter Password"/>
+							  </label>
+							<br>
+									  
+							 <input type="submit" name="submit" value="Register" >
+							<input formaction="/auth" type="submit" name="Login" value="Login" >
+						  </form>
+                    </div>
+                </div>
+                <br>
+                <h4>{{ message }}</h4>
+
+            </div>
+
+        </div>
+
+
+</body>
+</html>

@@ -9,6 +9,7 @@ flask = "*"
 psycopg2-binary = "*"
 sqlalchemy = "*"
 flask-session = "*"
+flask-sqlalchemy = "*"
 
 [dev-packages]
 

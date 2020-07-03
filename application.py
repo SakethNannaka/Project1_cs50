@@ -6,11 +6,6 @@ from sqlalchemy import create_engine,and_,or_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask import jsonify
 from models import *
-
-from search import *
-from bookpage import *
-from review import *
-
 from sqlalchemy import text
 
 app = Flask(__name__)   
@@ -26,7 +21,6 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-Username = ""
 @app.route("/")
 def index():
     return "Project 1: TODO"

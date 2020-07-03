@@ -111,7 +111,60 @@ def logout():
 
 @app.route('/login')
 def login():
-    return redirect('search')
+    return redirect(url_for('search'))
+
+
+@app.route('/search',methods=['post','get'])
+def search():
+    try:
+        session['user'].username
+    except:
+        return redirect(url_for('register',args=3))
+    if request.method == 'POST':
+        Field=((request.form['Choose Field']))
+        print(f"Field :  {Field} ")
+        Key = request.form.get('Search Bar')
+        search = "%{}%".format(Key)
+
+        if Field == "title" :
+
+            list = db.query(Books).filter(Books.title.like(search))
+            count = 0
+            for x in list:
+                print(x)
+                count=count+1
+            return render_template('search.html',list=list,length=count,username=session['user'].username)
+
+
+        elif Field == "isbn" :
+
+            list = db.query(Books).filter(Books.isbn.like(search))
+            count = 0
+            for x in list:
+                print(x)
+                count=count+1
+            return render_template('search.html',list=list,length=count,username=session['user'].username)
+
+        elif Field == "author" :
+
+            list = db.query(Books).filter(Books.author.like(search))
+            count = 0
+            for x in list:
+                print(x)
+                count=count+1
+            return render_template('search.html',list=list,length=count,username=session['user'].username)
+
+        else :
+            key = "{}%".format(Key)
+            list = db.query(Books).filter(Books.year.like(key))
+            count = 0
+            for x in list:
+                print(x)
+                count=count+1
+            return render_template('search.html',list=list,length=count,username=session['user'].username)
+
+    else:
+        return render_template('search.html',length=-1,username=session['user'].username)
 
 @app.route('/book/<string:args>')      
 @app.route('/book')
@@ -174,58 +227,6 @@ def review(name=None):
         reviews=db.query(Reviews).filter(Reviews.isbn==request.form.get("ISBN")).all()
         return render_template('book.html',username=session['user'].username, message=message,obj=obj,reviews=reviews)
 
-
-@app.route('/search',methods=['post','get'])
-def search():
-    try:
-        session['user'].username
-    except:
-        return redirect(url_for('register',args=3))
-    if request.method == 'POST':
-        Field=((request.form['Choose Field']))
-        print(f"Field :  {Field} ")
-        Key = request.form.get('Search Bar')
-        search = "%{}%".format(Key)
-
-        if Field == "title" :
-
-            list = db.query(Books).filter(Books.title.like(search))
-            count = 0
-            for x in list:
-                print(x)
-                count=count+1
-            return render_template('search.html',list=list,length=count,username=session['user'].username)
-
-
-        elif Field == "isbn" :
-
-            list = db.query(Books).filter(Books.isbn.like(search))
-            count = 0
-            for x in list:
-                print(x)
-                count=count+1
-            return render_template('search.html',list=list,length=count,username=session['user'].username)
-
-        elif Field == "author" :
-
-            list = db.query(Books).filter(Books.author.like(search))
-            count = 0
-            for x in list:
-                print(x)
-                count=count+1
-            return render_template('search.html',list=list,length=count,username=session['user'].username)
-
-        else :
-            key = "{}%".format(Key)
-            list = db.query(Books).filter(Books.year.like(key))
-            count = 0
-            for x in list:
-                print(x)
-                count=count+1
-            return render_template('search.html',list=list,length=count,username=session['user'].username)
-
-    else:
-        return render_template('search.html',length=-1,username=session['user'].username)
 
 
 

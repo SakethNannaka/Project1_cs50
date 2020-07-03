@@ -2,9 +2,8 @@ import os
 import datetime
 from flask import Flask, session,render_template,request,redirect,url_for
 from flask_session import Session
-from sqlalchemy import create_engine,and_,or_
+from sqlalchemy import create_engine,and_
 from sqlalchemy.orm import scoped_session, sessionmaker
-from flask import jsonify
 from models import *
 from sqlalchemy import text
 
@@ -21,6 +20,7 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+Username = ""
 @app.route("/")
 def index():
     return "Project 1: TODO"
@@ -33,7 +33,6 @@ def register(args=None):
         if args == None:
             username = request.form.get('username')  # access the data inside 
             password = request.form.get('password')
-            print(f">>>>>>>>>>>>>>>>>>>>>>>>>>>{username}, : {password}")
             if len(username)<1 or len(password)<1:
                 message = "UserName and password Can't be Empty"
             elif db.query(Form).get(username) is not None:
@@ -83,7 +82,7 @@ def auth():
         form    = db.query(Form).get(username)
         try:
             if(username==form.username) and (password==form.password):
-                # session['user'] = form
+                session['user'] = form
                 return redirect(url_for('home'))
             else:
                 return redirect(url_for('register',args=1))
@@ -98,8 +97,8 @@ def auth():
 def home():
     try:
         Username =session['user'].username
-        print(f">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>{UserName}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-        return render_template('change.html',username=Username)
+
+        return render_template('home.html',username=Username)
     except:
         return redirect(url_for('register',args=3))
         
@@ -111,8 +110,7 @@ def logout():
 
 @app.route('/login')
 def login():
-    return redirect(url_for('search'))
-
+    return redirect('search')
 
 @app.route('/search',methods=['post','get'])
 def search():
@@ -166,6 +164,7 @@ def search():
     else:
         return render_template('search.html',length=-1,username=session['user'].username)
 
+
 @app.route('/book/<string:args>')      
 @app.route('/book')
 def book(args=None):
@@ -179,8 +178,11 @@ def book(args=None):
             break
 
     print(f"ISBN :{isbn} , Username :{session['user'].username}")
+    # isbn= db.query(Reviews).filter(Reviews.isbn==args).all()            
     rev= db.query(Reviews).filter(and_(Reviews.username == session['user'].username, Reviews.isbn == isbn)).first()
     message=""
+    #print(rev.review)
+
 
     print(f"obj :{obj}")
 
@@ -189,11 +191,13 @@ def book(args=None):
         comment=rev.review
         message="you have already submitted review for this book"
         reviews=db.query(Reviews).filter(Reviews.isbn==isbn).all()
-        return render_template('bookpage.html',username=session['user'].username,obj=obj, message=message, Rating=rate, Review=comment,reviews=reviews)
+        return render_template('book.html',username=session['user'].username,obj=obj, message=message, Rating=rate, Review=comment,reviews=reviews)
     else:
         message="please submit review"
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Rev None")
-        return render_template('bookpage.html',username=session['user'].username, obj=obj,message=message,Rating=None,Review=None)
+        return render_template('book.html',username=session['user'].username, obj=obj,message=message,Rating=None,Review=None)
+        
+    
 
 @app.route('/review/<string:name>')
 @app.route('/review', methods=['post'])
@@ -213,6 +217,12 @@ def review(name=None):
 
     reviews=db.query(Reviews).filter(Reviews.isbn=="0765317508").all()
     print(type(reviews))
+    # for x in reviews:
+    #     print(   request.form.get("ISBN") ,x.isbn ,"hai")
+    #     array.append(x)
+    #     print(f">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>{x}")    
+
+
 
     reviews = Reviews(username=session['user'].username, isbn=request.form.get("ISBN"), review=Review, rating=Rating)
     try:
@@ -227,39 +237,5 @@ def review(name=None):
         reviews=db.query(Reviews).filter(Reviews.isbn==request.form.get("ISBN")).all()
         return render_template('book.html',username=session['user'].username, message=message,obj=obj,reviews=reviews)
 
-
-
-
-@app.route('/api/<string:args>')      
-@app.route('/api')
-def api(args=None):
-    # obj = db.query(Books).filter(Books.isbn==args).first()
-    obj = db.query(Books).filter(or_(Book.ISBN.like(args), Book.year.like(args), Book.author.like(args), Book.title.like(args))).all()
-    print(obj)
-    return jsonify(isbn= obj.isbn
-    ,title = obj.title,
-        author = obj.author
-        ,year = obj.year)
-
-@app.route('/api/search',methods=['post','get'])
-def searchapi():
-    args = request.form.get('search_input')
-    print(args)
-    args = "%{}%".format(args)
-    args = args.title()
-    obj = db.query(Books).filter(or_(Books.isbn.like(args), Books.year.like(args), Books.author.like(args), Books.title.like(args))).all()
-
-    books={"books_1":[]}
-    for x in obj:
-         element = dict()
-         element["ISBN"] = x.isbn
-         element["Title"] = x.title
-         element["Author"] = x.author
-         element["Year"] = x.year
-         books["books_1"].append(element)
-    if len(obj)>0:
-        books["success"]=True
-        # print(books)
-        return jsonify(books)
-    else:
-        return jsonify({"success": False})
+    
+    

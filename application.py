@@ -98,6 +98,7 @@ def auth():
 def home():
     try:
         Username =session['user'].username
+        print(f">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>{UserName}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,")
         return render_template('change.html',username=Username)
     except:
         return redirect(url_for('register',args=3))

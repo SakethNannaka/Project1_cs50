@@ -97,8 +97,7 @@ def auth():
 @app.route('/home')
 def home():
     try:
-        # Username =session['user'].username
-
+        Username =session['user'].username
         return render_template('change.html',username=Username)
     except:
         return redirect(url_for('register',args=3))
